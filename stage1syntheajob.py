@@ -9,7 +9,7 @@ from awsglue.context import GlueContext
 from awsglue.utils import getResolvedOptions
 from awsglue.job import Job
 
-# Get parameters
+# Get parameters 
 args = getResolvedOptions(sys.argv, ['JOB_NAME', 'SOURCE_S3_PATH', 'TARGET_S3_PATH'])
 
 sc = SparkContext()
