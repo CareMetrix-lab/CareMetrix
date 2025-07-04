@@ -1,0 +1,95 @@
+{
+  "Comment": "Step function to run 4 Glue jobs in sequence with error handling.",
+  "StartAt": "Run Glue Job 1",
+  "States": {
+    "Run Glue Job 1": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "Stage1syntheajob"
+      },
+      "Next": "Run Glue Job 2",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Notify Failure"
+        }
+      ]
+    },
+    "Run Glue Job 2": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "Staging_Cleaning"
+      },
+      "Next": "Run Glue Job 3",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Notify Failure"
+        }
+      ]
+    },
+    "Run Glue Job 3": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "Synthea001job3"
+      },
+      "Next": "Run Glue Job 4",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Notify Failure"
+        }
+      ]
+    },
+    "Run Glue Job 4": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "patientdatamart_001job"
+      },
+      "Next": "Notify Success",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "Notify Failure"
+        }
+      ]
+    },
+    "Notify Success": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:your_region:#############:sns_topic",  //make changes according to your region, user_id and sns_topic names.
+        "Message": "All Glue Jobs completed successfully.",
+        "Subject": "Glue Job Status: SUCCESS"
+      },
+      "End": true
+    },
+    "Notify Failure": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:your_region:#############:sns_topic",  //make changes according to your region, user_id and sns_topic names.
+        "Message": "One of the Glue Jobs failed. Check the Step Function execution for details.",
+        "Subject": "Glue Job Status: FAILURE"
+      },
+      "Next": "Job Failed"
+    },
+    "Job Failed": {
+      "Type": "Fail",
+      "Error": "GlueJobFailure",
+      "Cause": "One of the Glue jobs failed or encountered an error."
+    }
+  }
+}
