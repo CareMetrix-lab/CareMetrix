@@ -70,7 +70,7 @@
       "Type": "Task",
       "Resource": "arn:aws:states:::sns:publish",
       "Parameters": {
-        "TopicArn": "arn:aws:sns:your_region:#############:sns_topic",  #make changes according to your region, user_id and sns_topic names.
+        "TopicArn": "arn:aws:sns:your_region:#############:sns_topic",  //make changes according to your region, user_id and sns_topic names.
         "Message": "All Glue Jobs completed successfully.",
         "Subject": "Glue Job Status: SUCCESS"
       },
@@ -80,7 +80,7 @@
       "Type": "Task",
       "Resource": "arn:aws:states:::sns:publish",
       "Parameters": {
-        "TopicArn": "arn:aws:sns:your_region:#############:sns_topic",  #make changes according to your region, user_id and sns_topic names.
+        "TopicArn": "arn:aws:sns:your_region:#############:sns_topic",  //make changes according to your region, user_id and sns_topic names.
         "Message": "One of the Glue Jobs failed. Check the Step Function execution for details.",
         "Subject": "Glue Job Status: FAILURE"
       },
