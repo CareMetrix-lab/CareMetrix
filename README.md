@@ -9,6 +9,7 @@ This repository contains a robust, end-to-end AWS-based data pipeline designed t
 The pipeline converts raw Synthea data into clean, structured, query-optimized datasets for BI and analytics. It is built using **fully managed, serverless AWS services** to ensure:
 - Minimal operational overhead
 - Easy integration with BI tools like Power BI
+- Fully automated orchestration using AWS Step Functions
 
 ---
 
@@ -21,6 +22,7 @@ The pipeline converts raw Synthea data into clean, structured, query-optimized d
 | ETL & Transformation | AWS Glue (PySpark)  | Deduplication, cleansing, conversion to Parquet |
 | Metadata Cataloging  | AWS Glue Jobs       | Custom schema management |
 | Creation of Datamarts | AWS Glue (PySpark) | To create datamarts |
+| Pipeline Orchestration| AWS Step Functions | Automated pipeline management |
 | Query Layer          | Amazon Athena       | Interactive SQL querying |
 | Visualization        | Power BI            | Dashboards and reports |
 
